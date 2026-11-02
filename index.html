@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Glugg</title>
+<meta name="description" content="End-to-end encrypted video meetings in the browser. The key is in the link and never reaches our servers. Made in Norway.">
+<meta property="og:title" content="Glugg: video meetings with the key in the link">
+<meta property="og:description" content="End-to-end encrypted video meetings in the browser. No app, no account to join. Servers in Norway.">
+<meta property="og:url" content="https://glugg.no/">
+<meta name="theme-color" content="#0b2a4a">
+<link rel="icon" href="/icon.svg">
+<link rel="preload" href="/grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+  // Old meeting links were glugg.no/#<key>; meetings now live on meet.glugg.no.
+  if (/^#[A-Za-z0-9_-]{22}$/.test(location.hash)) location.replace('https://meet.glugg.no/' + location.hash);
+</script>
+<style>
+@font-face { font-family: 'Schibsted Grotesk'; src: url(/grotesk.woff2) format('woff2'); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: 'Plex Mono'; src: url(/mono.woff2) format('woff2'); font-weight: 500; font-display: swap; }
+
+/* Layout: left-aligned editorial column, 72rem; the hero pairs a headline with the meeting link itself, taken apart. */
+:root {
+  --paper: #f3f6f8; --raise: #ffffff; --ink: #0b1f33; --muted: #4a5d70; --rule: #d5dde4;
+  --accent: #0e7c6f; --accent-ink: #ffffff;
+  --sea: #0b2a4a; --sea-ink: #e8f0f6; --sea-dim: #8fb0c9;
+  --key: #ffd27a; --coral: #ff8a6b; --teal: #3fd6c1;
+  --display: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --body: 'Schibsted Grotesk', system-ui, sans-serif;
+  --mono: 'Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #08141f; --raise: #0f2234; --ink: #e4ecf2; --muted: #93a6b8; --rule: #1d3349;
+  --accent: #3fd6c1; --accent-ink: #062520; --sea: #0d2c4b; --sea-ink: #e8f0f6; --sea-dim: #8fb0c9;
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --paper: #08141f; --raise: #0f2234; --ink: #e4ecf2; --muted: #93a6b8; --rule: #1d3349;
+  --accent: #3fd6c1; --accent-ink: #062520; --sea: #0d2c4b; --sea-ink: #e8f0f6; --sea-dim: #8fb0c9;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.6 var(--body); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.wrap { max-width: 72rem; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.label { font: 500 .78rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+.btn { display: inline-flex; align-items: center; gap: .5em; padding: .8em 1.25em; border-radius: 10px; font: 600 1rem/1 var(--body); text-decoration: none; border: 1.5px solid transparent; transition: transform .15s, background .15s; }
+.btn:hover { transform: translateY(-1px); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.quiet { border-color: var(--rule); color: var(--ink); }
+.btn.quiet:hover { border-color: var(--muted); }
+
+/* Top bar */
+header { padding-block: 22px; }
+header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 800 1.3rem/1 var(--display); letter-spacing: -.02em; text-decoration: none; }
+.brand img { width: 32px; height: 32px; }
+header nav { display: flex; align-items: center; gap: 28px; font-weight: 500; }
+header nav a:not(.btn) { text-decoration: none; color: var(--muted); }
+header nav a:not(.btn):hover { color: var(--ink); }
+header .btn { padding: .6em 1em; }
+
+/* Hero */
+.hero { padding-block: clamp(32px, 7vw, 88px) clamp(56px, 8vw, 104px); }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 64px); align-items: center; }
+.hero h1 { font-size: clamp(2.6rem, 5.6vw, 4.6rem); line-height: .98; font-weight: 800; letter-spacing: -.035em; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede { margin-top: 24px; max-width: 32rem; font-size: 1.2rem; color: var(--muted); }
+.hero .ctas { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+.hero .small { margin-top: 18px; font-size: .92rem; color: var(--muted); }
+
+/* The link, taken apart */
+.window { margin: 0; background: var(--sea); color: var(--sea-ink); border-radius: 22px; padding: clamp(18px, 3vw, 28px); box-shadow: 0 30px 60px -30px #0b2a4a80; }
+.bar { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #ffffff12; font: 500 clamp(.8rem, 1.6vw, .98rem)/1.2 var(--mono); }
+.bar .lock { flex: none; width: 15px; height: 15px; color: var(--teal); }
+.bar .url { min-width: 0; overflow-wrap: anywhere; }
+.bar .host { color: var(--sea-dim); }
+.bar .k { color: var(--key); }
+.notes { display: grid; grid-template-columns: auto 1fr; gap: 14px 0; margin-top: 14px; font-size: .9rem; color: var(--sea-dim); }
+.notes > div { display: contents; }
+.notes .tick { width: 22px; margin-top: 7px; height: 10px; border: 2px solid currentColor; border-top: 0; border-right: 0; border-radius: 0 0 0 4px; margin-left: 10px; }
+.notes .yes { color: var(--key); }
+.notes b { color: var(--sea-ink); font-weight: 600; }
+.call { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 14px; overflow: hidden; background: #ffffff10; }
+.tile i { position: absolute; left: 50%; border-radius: 50%; translate: -50% 0; }
+.tile i:first-child { top: 26%; width: 26%; aspect-ratio: 1; }
+.tile i:nth-child(2) { top: 62%; width: 52%; aspect-ratio: 1 / .9; }
+.tile.a i { background: var(--key); } .tile.b i { background: var(--coral); }
+.tile span { position: absolute; left: 10px; bottom: 10px; padding: 2px 8px; border-radius: 6px; background: #0b1f33b3; font-size: .78rem; color: #fff; }
+.tile .path { left: auto; right: 10px; top: 10px; bottom: auto; font: 500 .7rem/1.5 var(--mono); color: var(--teal); }
+
+section { padding-block: clamp(56px, 8vw, 104px); }
+.section-head { display: grid; gap: 14px; max-width: 40rem; margin-bottom: 48px; }
+.section-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.05; font-weight: 750; letter-spacing: -.025em; }
+.section-head p { color: var(--muted); font-size: 1.1rem; }
+
+/* Steps: a real sequence, so they are numbered. */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; counter-reset: s; }
+.steps li { counter-increment: s; display: grid; gap: 10px; align-content: start; }
+.steps li::before { content: counter(s); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent); color: var(--accent); font: 700 1.05rem/1 var(--display); margin-bottom: 6px; }
+.steps h3 { font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; }
+.steps p { color: var(--muted); }
+
+/* What the server sees */
+.ledger { background: var(--raise); border-radius: 22px; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+.ledger > div { padding: clamp(24px, 4vw, 44px); display: grid; gap: 18px; align-content: start; }
+.ledger > div + div { background: var(--sea); color: var(--sea-ink); }
+.ledger > div + div .label { color: var(--key); }
+.ledger ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.ledger li { display: grid; gap: 2px; }
+.ledger li b { font-weight: 650; }
+.ledger li span { color: var(--muted); font-size: .95rem; }
+.ledger > div + div li span { color: var(--sea-dim); }
+
+/* Features */
+.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 44px 40px; }
+.features div { display: grid; gap: 8px; align-content: start; }
+.features svg { width: 28px; height: 28px; color: var(--accent); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 6px; }
+.features h3 { font-size: 1.15rem; font-weight: 700; }
+.features p { color: var(--muted); }
+
+/* Questions */
+.faq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 48px; }
+details { border-top: 1px solid var(--rule); padding-block: 20px; }
+details:last-child { border-bottom: 1px solid var(--rule); }
+summary { cursor: pointer; font: 650 1.12rem/1.3 var(--display); list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: '+'; color: var(--accent); font-weight: 500; font-size: 1.4rem; line-height: 1; transition: rotate .2s; }
+details[open] summary::after { rotate: 45deg; }
+details p { margin-top: 12px; color: var(--muted); max-width: 40rem; }
+
+/* Closing band */
+.cta { background: var(--sea); color: var(--sea-ink); }
+.cta .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px; }
+.cta h2 { font-size: clamp(1.9rem, 3.8vw, 3rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.02; max-width: 30rem; }
+.cta p { color: var(--sea-dim); margin-top: 12px; }
+.cta .btn.primary { background: var(--teal); color: #062520; }
+
+footer { padding-block: 40px; font-size: .92rem; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 22px; }
+footer a { text-decoration: none; } footer a:hover { color: var(--ink); }
+
+@media (max-width: 860px) {
+  .hero .wrap, .faq { grid-template-columns: minmax(0, 1fr); }
+  .steps, .features { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .ledger { grid-template-columns: minmax(0, 1fr); }
+  header nav a:not(.btn) { display: none; }
+}
+@media (min-width: 861px) and (max-width: 1040px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/icon.svg" alt="">Glugg</a>
+    <nav aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#questions">Questions</a>
+      <a class="btn primary" href="https://meet.glugg.no/">Open Glugg</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Video meetings with the key <em>in the link.</em></h1>
+        <p class="lede">Glugg encrypts every call in your browser. The key is the part of the link after the&nbsp;#, and browsers never send that part to a server. Not even ours.</p>
+        <div class="ctas">
+          <a class="btn primary" href="https://meet.glugg.no/">Start a meeting</a>
+          <a class="btn quiet" href="#how">How it works</a>
+        </div>
+        <p class="small">Guests join with the link. No app, no account.</p>
+      </div>
+
+      <figure class="window" aria-label="A Glugg meeting link, explained">
+        <div class="bar">
+          <svg class="lock" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>
+          <span class="url"><span class="host">meet.glugg.no/</span><span class="k">#<span id="key">r4Q9vT2mXkLp7eWb0sHn3A</span></span></span>
+        </div>
+        <div class="notes">
+          <div><span class="tick" aria-hidden="true"></span><p><b>meet.glugg.no/</b> is all our server is asked for.</p></div>
+          <div><span class="tick yes" aria-hidden="true"></span><p><b class="yes" id="short">#r4Q9…</b> is the key. It stays in the browsers of the people you send it to. <span id="fresh">Yours was made just now, on this page.</span></p></div>
+        </div>
+        <div class="call" aria-hidden="true">
+          <div class="tile a"><i></i><i></i><span>Ingrid</span><span class="path">direct</span></div>
+          <div class="tile b"><i></i><i></i><span>Ola</span><span class="path">direct</span></div>
+        </div>
+      </figure>
+    </div>
+  </div>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">How a meeting works</p>
+        <h2>Three steps, and only the first one needs an account.</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Start a meeting</h3><p>Sign in with your email. We send a six-digit code; there is no password to forget or leak. Glugg makes a new link with a fresh key.</p></li>
+        <li><h3>Send the link</h3><p>Paste it into a calendar invite, a chat or an email. Whoever has the link can join, so share it the way you would share a door key.</p></li>
+        <li><h3>Talk</h3><p>Video goes straight between you when your networks allow it. When they don't, our server passes it along, still encrypted.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">Privacy</p>
+        <h2>What our server sees, and what it never can.</h2>
+        <p>Calls are encrypted with AES-256 on a key derived from the link. Here is the whole list.</p>
+      </div>
+      <div class="ledger">
+        <div>
+          <p class="label">The server sees</p>
+          <ul>
+            <li><b>A meeting number</b><span>A one-way hash of the key. It can't be turned back into the key.</span></li>
+            <li><b>Your IP address</b><span>While you are connected, because that is how calls connect.</span></li>
+            <li><b>The host's email address</b><span>Only for people who sign in to start meetings.</span></li>
+            <li><b>How many are in the meeting</b><span>And when each person joins and leaves.</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="label">It never sees</p>
+          <ul>
+            <li><b>The key</b><span>Browsers keep the part after # to themselves.</span></li>
+            <li><b>Your video and sound</b><span>Encrypted before they leave your device, even when relayed.</span></li>
+            <li><b>The names you type</b><span>Sent only to the others in the meeting, encrypted.</span></li>
+            <li><b>A recording</b><span>We don't record calls, and without the key a recording would be noise.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">What you get</p>
+        <h2>A meeting room that stays out of the way.</h2>
+      </div>
+      <div class="features">
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          <h3>Runs in the browser</h3><p>Current Chrome, Edge, Safari and Firefox, on a laptop or a phone. Nothing to install.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h5l2-4 2 8 2-4h5"/></svg>
+          <h3>Direct when it can be</h3><p>A two-person call usually runs straight between you, which keeps delay low and nothing in between.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-6 4 3 4-6 5 7"/><path d="M3 21h18"/></svg>
+          <h3>Adapts to the network</h3><p>On a weak connection you get fewer frames, never a frozen picture with sound running seconds behind.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          <h3>The host keeps order</h3><p>Lock the meeting when everyone is in, remove someone who shouldn't be there, or report a problem.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <h3>Servers in Norway</h3><p>Run by Bogentech under Norwegian law and the GDPR. No ads, no analytics, one cookie.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M17 8.5a3 3 0 0 1 0 6M21.5 20a5.5 5.5 0 0 0-3.5-5"/></svg>
+          <h3>Up to 50 people</h3><p>Grid for discussions, spotlight for a presenter. Each person picks their own view.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <div class="wrap faq">
+      <div class="section-head">
+        <p class="label">Questions</p>
+        <h2>Things people ask before the first call.</h2>
+      </div>
+      <div>
+        <details><summary>Do my guests need an account?</summary><p>No. Anyone with the link can join with just a name. Only the person who starts the meeting signs in. If a guest arrives first, they wait until the host is there.</p></details>
+        <details><summary>What stops someone else from joining?</summary><p>The key in the link is 128 random bits, so it can't be guessed. Anyone you forward the link to can join, though. When everyone is in, the host can lock the meeting.</p></details>
+        <details><summary>Can Glugg hand my calls to anyone?</summary><p>We can only hand over what we have, and that is the list above. We never have the key, so we can't decrypt a call, live or later.</p></details>
+        <details><summary>Why does my call say "relayed"?</summary><p>Some networks, such as many mobile carriers and office firewalls, block direct connections. Then the video goes through our server in Norway. It is encrypted the same way.</p></details>
+        <details><summary>Who makes Glugg?</summary><p>Bogentech, a small Norwegian company. Write to contact@bogentech.no with questions or problems.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <div>
+        <h2>Your next meeting is one link away.</h2>
+        <p>Sign in with your email and send the link. That's the setup.</p>
+      </div>
+      <a class="btn primary" href="https://meet.glugg.no/">Start a meeting</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Bogentech, Norway</p>
+    <nav aria-label="Legal">
+      <a href="https://meet.glugg.no/terms">Terms</a>
+      <a href="https://meet.glugg.no/privacy">Privacy policy</a>
+      <a href="mailto:contact@bogentech.no">contact@bogentech.no</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // A real key, made the same way the app makes one.
+  try {
+    const k = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    document.getElementById('key').textContent = k;
+    document.getElementById('short').textContent = '#' + k.slice(0, 4) + '…';
+  } catch { document.getElementById('fresh').hidden = true; }
+</script>
+</body>
+</html>

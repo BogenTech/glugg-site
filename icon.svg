@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#103a63"/><stop offset="1" stop-color="#071d36"/></linearGradient>
+    <radialGradient id="glass" cx=".42" cy=".36" r=".75"><stop offset="0" stop-color="#3f8fd0"/><stop offset="1" stop-color="#14467d"/></radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3fd6c1"/><stop offset="1" stop-color="#139a8a"/></linearGradient>
+    <clipPath id="window"><circle cx="256" cy="256" r="150"/></clipPath>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#sea)"/>
+  <circle cx="256" cy="256" r="150" fill="url(#glass)"/>
+  <g clip-path="url(#window)">
+    <!-- Two people, one a little behind the other. -->
+    <circle cx="300" cy="232" r="40" fill="#ffd27a"/>
+    <ellipse cx="300" cy="362" rx="72" ry="78" fill="#ffd27a"/>
+    <circle cx="212" cy="262" r="44" fill="#ff8a6b"/>
+    <ellipse cx="212" cy="400" rx="82" ry="84" fill="#ff8a6b"/>
+    <!-- Light on the glass. -->
+    <path d="M150 210a112 112 0 0 1 96-90" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="14" stroke-linecap="round"/>
+  </g>
+  <circle cx="256" cy="256" r="172" fill="none" stroke="url(#ring)" stroke-width="44"/>
+  <g fill="#0b5f57">
+    <circle cx="256" cy="84" r="9"/><circle cx="256" cy="428" r="9"/><circle cx="84" cy="256" r="9"/><circle cx="428" cy="256" r="9"/>
+    <circle cx="134" cy="134" r="9"/><circle cx="378" cy="134" r="9"/><circle cx="134" cy="378" r="9"/><circle cx="378" cy="378" r="9"/>
+  </g>
+</svg>
