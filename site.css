@@ -53,7 +53,7 @@ header .wrap { display: flex; align-items: center; justify-content: space-betwee
 .brand { display: flex; align-items: center; gap: 10px; font: 800 1.3rem/1 var(--display); letter-spacing: -.02em; text-decoration: none; }
 .brand img { width: 32px; height: 32px; }
 header nav { display: flex; align-items: center; gap: 28px; font-weight: 500; }
-header nav a:not(.btn):not(.lang) { text-decoration: none; color: var(--muted); }
+header nav a:not(.btn):not(.lang) { text-decoration: none; color: var(--muted); white-space: nowrap; }
 header nav a:not(.btn):not(.lang):hover { color: var(--ink); }
 header .btn { padding: .6em 1em; }
 
